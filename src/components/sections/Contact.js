@@ -4,55 +4,59 @@ import Pagetitle from "../elements/Pagetitle";
 import emailjs from '@emailjs/browser';
 
 
-
+const initialState = {
+  name: "",
+  email: "",
+  subject: "",
+  message: "",
+}
 
 function Contact() {
   const form = useRef();
-  const [formdata, setFormdata] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-  });
+  const [formData, setFormData] = useState(initialState);
 
   const [error, setError] = useState(false);
   const [message, setMessage] = useState("");
 
   const submitHandler = (event) => {
     event.preventDefault();
+    validateFormData();
+    if (!error) {
+      emailjs.sendForm('service_7pdw8ap', 'template_6h7w2be', form.current, 'nJlmzX0_uoDZ73JEw')
+        .then((result) => {
+          resetFormData();
+        }, (error) => {
+          console.log(error.text);
+        });
+    }
+  }
 
-    emailjs.sendForm('service_7pdw8ap', 'template_6h7w2be', form.current, 'nJlmzX0_uoDZ73JEw')
-      .then((result) => {
-        console.log(result.text);
-      }, (error) => {
-        console.log(error.text);
-      });
 
-    if (!formdata.name) {
+  const validateFormData = () => {
+    if (!formData.name) {
       setError(true);
       setMessage("Name is required");
-    } else if (!formdata.email) {
+    } else if (!formData.email) {
       setError(true);
       setMessage("Email is required");
-    } else if (!formdata.subject) {
+    } else if (!formData.subject) {
       setError(true);
       setMessage("Subject is required");
-    } else if (!formdata.message) {
+    } else if (!formData.message) {
       setError(true);
       setMessage("Message is required");
-    } else {
-      setError(false);
-      setMessage("You message has been sent!!!");
-      formdata.name = "";
-      formdata.email = "";
-      formdata.subject = "";
-       formdata.message = "";
     }
-  };
+  }
+
+  const resetFormData = () =>{
+    setError(false);
+      setMessage("You message has been sent!!!");
+      setFormData(initialState);
+  }
 
   const handleChange = (event) => {
-    setFormdata({
-      ...formdata,
+    setFormData({
+      ...formData,
       [event.currentTarget.name]: event.currentTarget.value,
     });
   };
@@ -112,7 +116,7 @@ function Contact() {
                       id="InputName"
                       placeholder="Your name"
                       onChange={handleChange}
-                      value={formdata.name}
+                      value={formData.name}
                     />
                   </div>
                 </div>
@@ -126,7 +130,7 @@ function Contact() {
                       name="email"
                       placeholder="Email address"
                       onChange={handleChange}
-                      value={formdata.email}
+                      value={formData.email}
                     />
                   </div>
                 </div>
@@ -140,7 +144,7 @@ function Contact() {
                       name="subject"
                       placeholder="Subject"
                       onChange={handleChange}
-                      value={formdata.subject}
+                      value={formData.subject}
                     />
                   </div>
                 </div>
@@ -154,7 +158,7 @@ function Contact() {
                       rows="5"
                       placeholder="Message"
                       onChange={handleChange}
-                      value={formdata.message}
+                      value={formData.message}
                     ></textarea>
                   </div>
                 </div>
