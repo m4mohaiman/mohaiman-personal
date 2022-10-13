@@ -1,8 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import ScrollAnimation from "react-animate-on-scroll";
 import Pagetitle from "../elements/Pagetitle";
+import emailjs from '@emailjs/browser';
+
+
+
 
 function Contact() {
+  const form = useRef();
   const [formdata, setFormdata] = useState({
     name: "",
     email: "",
@@ -15,6 +20,14 @@ function Contact() {
 
   const submitHandler = (event) => {
     event.preventDefault();
+
+    emailjs.sendForm('service_7pdw8ap', 'template_6h7w2be', form.current, 'nJlmzX0_uoDZ73JEw')
+      .then((result) => {
+        console.log(result.text);
+      }, (error) => {
+        console.log(error.text);
+      });
+
     if (!formdata.name) {
       setError(true);
       setMessage("Name is required");
@@ -30,6 +43,10 @@ function Contact() {
     } else {
       setError(false);
       setMessage("You message has been sent!!!");
+      formdata.name = "";
+      formdata.email = "";
+      formdata.subject = "";
+       formdata.message = "";
     }
   };
 
@@ -80,6 +97,7 @@ function Contact() {
 
           <div className="col-md-8">
             <form
+              ref={form}
               id="contact-form"
               className="contact-form mt-6"
               onSubmit={submitHandler}
