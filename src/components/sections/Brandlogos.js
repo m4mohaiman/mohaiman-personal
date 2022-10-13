@@ -3,7 +3,7 @@ import React from "react";
 const brandlogoData = [
   {
     id: 1,
-    image: "images/client-1.svg",
+    image: "images/figma.svg",
   },
   {
     id: 2,
@@ -15,11 +15,11 @@ const brandlogoData = [
   },
   {
     id: 4,
-    image: "images/client-4.svg",
+    image: "images/js.svg",
   },
   {
     id: 5,
-    image: "images/client-5.svg",
+    image: "images/git.svg",
   },
   {
     id: 6,
@@ -27,7 +27,7 @@ const brandlogoData = [
   },
   {
     id: 7,
-    image: "images/client-7.svg",
+    image: "images/react.svg",
   },
   {
     id: 8,
